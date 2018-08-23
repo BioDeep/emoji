@@ -180,4 +180,68 @@ var emoji;
     }());
     emoji.Resource = Resource;
 })(emoji || (emoji = {}));
+var selectRange = /** @class */ (function () {
+    function selectRange(e) {
+        this.element = e;
+    }
+    selectRange.of = function (e) {
+        return e ? new selectRange(e) : {};
+    };
+    selectRange.prototype.getCurPos = function () {
+        var e, c = 0;
+        var input = this.element;
+        return document.selection ? (input.focus(),
+            (e = document.selection.createRange()).moveStart("character", -input.value.length),
+            c = e.text.length) : (input.selectionStart || 0 == input.selectionStart) && (c = input.selectionStart),
+            c;
+    };
+    selectRange.prototype.setCurPos = function (e) {
+        var t;
+        var input = this.element;
+        input.setSelectionRange ? (input.focus(),
+            input.setSelectionRange(e, e)) : input.createTextRange && ((t = input.createTextRange()).collapse(!0),
+            t.moveEnd("character", e),
+            t.moveStart("character", e),
+            t.select());
+    };
+    selectRange.prototype.getSelectText = function () {
+        var e, t = "";
+        return window.getSelection ? e = window.getSelection() : document.selection && (e = document.selection.createRange()),
+            (t = e.text) || (t = e),
+            t;
+    };
+    selectRange.prototype.setSelectText = function (e, t) {
+        var n, c;
+        var input = this.element;
+        e = parseInt(e),
+            t = parseInt(t),
+            (n = input.value.length) && (e || (e = 0),
+                t || (t = n),
+                n < e && (e = n),
+                n < t && (t = n),
+                e < 0 && (e = n + e),
+                t < 0 && (t = n + t),
+                input.createTextRange ? ((c = input.createTextRange()).moveStart("character", -n),
+                    c.moveEnd("character", -n),
+                    c.moveStart("character", e),
+                    c.moveEnd("character", t),
+                    c.select()) : (input.setSelectionRange(e, t),
+                    input.focus()));
+    };
+    selectRange.prototype.insertAfterText = function (e) {
+        var t, n, c;
+        var input = this.element;
+        document.selection ?
+            (input.focus(), document.selection.createRange().text = e, input.focus()) : input.selectionStart || 0 == input.selectionStart ?
+            (t = input.selectionStart,
+                n = input.selectionEnd,
+                c = input.scrollTop,
+                input.value = input.value.substring(0, t) + e + input.value.substring(n, input.value.length),
+                input.focus(),
+                input.selectionStart = t + e.length,
+                input.selectionEnd = t + e.length,
+                input.scrollTop = c) : (input.value += e, input.focus());
+    };
+    return selectRange;
+}());
 //# sourceMappingURL=emoji.js.map
