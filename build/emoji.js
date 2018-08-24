@@ -180,15 +180,93 @@ var emoji;
     }());
     emoji.Resource = Resource;
 })(emoji || (emoji = {}));
+/**
+ * 样式依赖于 semantic.min.css
+ *
+ * > https://github.com/Semantic-Org/Semantic-UI
+*/
+var EmojiBox = /** @class */ (function () {
+    /**
+     * @param ncols 每一行之中的emoji的数量
+    */
+    function EmojiBox(emojiEntry) {
+        var container = document.createElement("div");
+        var wrapper = document.createElement("div");
+        var menu = document.createElement("div");
+        var list = document.createElement("div");
+        var grid = document.createElement("div");
+        var emojiSVG = new emoji.Resource();
+        container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
+        container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
+        wrapper.classList.add("emoji-wrapper");
+        menu.classList.add("ui", "secondary", "pointing", "menu");
+        menu.innerHTML = "<a class=\"item active\">People</a>";
+        list.classList.add("emoji-list");
+        grid.classList.add("ui", "ten", "column", "padded", "grid");
+        Object.keys(emojiEntry).forEach(function (name) {
+            var title = emojiEntry[name];
+            var col = document.createElement("div");
+            var item = document.createElement("div");
+            col.classList.add("column");
+            item.title = title;
+            item.setAttribute("data-emoji", name);
+            item.classList.add("emoji-item");
+            item.innerHTML = emojiSVG.getSVG(name);
+            item.getElementsByTagName("svg")[0].setAttribute("height", "1.5em");
+            col.appendChild(item);
+            grid.appendChild(col);
+        });
+        list.appendChild(grid);
+        wrapper.appendChild(list);
+        wrapper.appendChild(menu);
+        container.appendChild(wrapper);
+        this.emojiGrid = container;
+    }
+    EmojiBox.prototype.show = function () {
+        this.emojiGrid.classList.remove("hidden");
+        this.emojiGrid.classList.add("visible");
+    };
+    EmojiBox.prototype.hide = function () {
+        this.emojiGrid.classList.remove("visible");
+        this.emojiGrid.classList.add("hidden");
+    };
+    return EmojiBox;
+}());
 var InputBox = /** @class */ (function () {
-    function InputBox(maxLen, showErrMessage) {
+    /**
+     * @param div 将要被插入输入框的div元素
+    */
+    function InputBox(emoji, div, maxLen, showErrMessage) {
+        if (div === void 0) { div = "tweetCommentForm"; }
         if (maxLen === void 0) { maxLen = 250; }
         if (showErrMessage === void 0) { showErrMessage = function (msg) {
             alert(msg);
         }; }
         this.commentMaxLength = maxLen;
         this.showErrMessage = showErrMessage;
+        this.emojiBox = new EmojiBox(emoji);
+        var container = document.getElementById(div);
+        var form = document.createElement("div");
+        form.classList.add("ui", "form", "tweet-form");
+        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" placeholder=\"\u6211\u6709\u8BDD\u8981\u8BF4\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a data-popup=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button class=\"ui primary right floated small button disabled\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
+        form.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
+        container.appendChild(form);
+        this.commentTextarea = form.getElementById("input-textarea");
     }
+    Object.defineProperty(InputBox.prototype, "commentContentIsEmpty", {
+        get: function () {
+            return 0 === this.commentContent.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(InputBox.prototype, "commentCountText", {
+        get: function () {
+            return this.commentContent.length + "/" + this.commentMaxLength;
+        },
+        enumerable: true,
+        configurable: true
+    });
     InputBox.prototype.focus = function () {
         this.commentTextarea.focus();
     };
@@ -211,13 +289,13 @@ var InputBox = /** @class */ (function () {
     InputBox.prototype.insertEmoji = function (emoji) {
         var name = "::" + emoji + "::";
         this.insertContent(name);
-        this.EmojiBox.style.display = "none";
+        this.emojiBox.hide();
     };
     return InputBox;
 }());
 var selectRange = /** @class */ (function () {
-    function selectRange(e) {
-        this.element = e;
+    function selectRange(inputs) {
+        this.element = inputs;
     }
     selectRange.of = function (e) {
         return e ? new selectRange(e) : {};

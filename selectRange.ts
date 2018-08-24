@@ -1,12 +1,12 @@
 ﻿class selectRange {
 
-    private element: HTMLInputElement;
+    private element: HTMLTextAreaElement;
 
-    public constructor(e: HTMLInputElement) {
-        this.element = e;
+    public constructor(inputs: HTMLTextAreaElement) {
+        this.element = inputs;
     }
 
-    public static of(e: HTMLInputElement): selectRange {
+    public static of(e: HTMLTextAreaElement): selectRange {
         return e ? new selectRange(e) : <any>{};
     }
 
@@ -76,7 +76,7 @@
         var t: number;
         var n: number;
         var c: number;
-        var input: HTMLInputElement = this.element;
+        var input: HTMLTextAreaElement = this.element;
 
         (<any>document).selection ?
             (input.focus(), (<any>document).selection.createRange().text = e, input.focus()) : input.selectionStart || 0 == input.selectionStart ?

@@ -48,13 +48,32 @@ declare module emoji {
         writeCache(key: string, svg: string): void;
     }
 }
+/**
+ * 样式依赖于 semantic.min.css
+ *
+ * > https://github.com/Semantic-Org/Semantic-UI
+*/
+declare class EmojiBox {
+    emojiGrid: HTMLDivElement;
+    /**
+     * @param ncols 每一行之中的emoji的数量
+    */
+    constructor(emojiEntry: object);
+    show(): void;
+    hide(): void;
+}
 declare class InputBox {
-    EmojiBox: HTMLElement;
-    commentTextarea: HTMLInputElement;
+    emojiBox: EmojiBox;
+    commentTextarea: HTMLTextAreaElement;
     commentContent: string;
     readonly commentMaxLength: number;
     readonly showErrMessage: (msg: string) => void;
-    constructor(maxLen?: number, showErrMessage?: (msg: string) => void);
+    readonly commentContentIsEmpty: boolean;
+    readonly commentCountText: string;
+    /**
+     * @param div 将要被插入输入框的div元素
+    */
+    constructor(emoji: object, div?: string, maxLen?: number, showErrMessage?: (msg: string) => void);
     focus(): void;
     insertContent(e: string): void;
     private reachMaxSize(append);
@@ -62,8 +81,8 @@ declare class InputBox {
 }
 declare class selectRange {
     private element;
-    constructor(e: HTMLInputElement);
-    static of(e: HTMLInputElement): selectRange;
+    constructor(inputs: HTMLTextAreaElement);
+    static of(e: HTMLTextAreaElement): selectRange;
     getCurPos(): number;
     setCurPos(position: number): void;
     getSelectText(): string;

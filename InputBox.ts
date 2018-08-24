@@ -1,7 +1,7 @@
 ﻿class InputBox {
 
     public emojiBox: EmojiBox;
-    public commentTextarea: HTMLInputElement;
+    public commentTextarea: HTMLTextAreaElement;
     public commentContent: string;
 
     public readonly commentMaxLength: number;
@@ -37,7 +37,7 @@
         form.classList.add("ui", "form", "tweet-form");
         form.innerHTML = `
             <div class="field">
-                <textarea rows="5" placeholder="我有话要说" class="tweet-comment-textarea disabled-resize">
+                <textarea id="input-textarea" rows="5" placeholder="我有话要说" class="tweet-comment-textarea disabled-resize">
                 </textarea>
             </div>
             <div class="field foot-bar">
@@ -57,6 +57,8 @@
 
         (<HTMLElement>(<any>form).getElementById("toolbox")).appendChild(this.emojiBox.emojiGrid);
         container.appendChild(form);
+
+        this.commentTextarea = (<any>form).getElementById("input-textarea");
     }
 
     public focus() {
