@@ -2,10 +2,14 @@
 
     public emojiBox: EmojiBox;
     public commentTextarea: HTMLTextAreaElement;
-    public commentContent: string;
+    public counter: HTMLElement;
 
     public readonly commentMaxLength: number;
     public readonly showErrMessage: (msg: string) => void;
+
+    public get commentContent(): string {
+        return this.commentTextarea.value;
+    }
 
     public get commentContentIsEmpty(): boolean {
         return 0 === this.commentContent.length;
@@ -18,8 +22,7 @@
     /**
      * @param div 将要被插入输入框的div元素
     */
-    public constructor(
-        emoji: object,
+    public constructor(emoji: object, publish: (content: string) => void,
         div: string = "tweetCommentForm",
         maxLen: number = 250,
         showErrMessage: (msg: string) => void =
@@ -52,7 +55,7 @@
                         <label for="pubTweet">在动态中显示</label>
                     </div>
                 -->
-                <button class="ui primary right floated small button disabled">发布评论</button>
+                <button id="publish" class="ui primary right floated small button">发布评论</button>
             </div>`;
 
         container.appendChild(form);
@@ -66,9 +69,12 @@
         document.getElementById("toolbox-emoji").onclick = function () {
             inputBox.emojiBox.show();
         };
+        document.getElementById("publish").onclick = function () {
+            publish(inputBox.commentContent);
+        }
 
         this.commentTextarea = area;
-        this.commentContent = "";
+        this.counter = counter;
 
         if (area.addEventListener) {
             area.addEventListener('input', function () {
@@ -95,7 +101,7 @@
                 .of(this.commentTextarea)
                 .insertAfterText(e);
 
-            this.commentContent = this.commentTextarea.value;
+            this.counter.innerHTML = this.commentCountText;
         }
     }
 

@@ -240,7 +240,7 @@ var InputBox = /** @class */ (function () {
     /**
      * @param div 将要被插入输入框的div元素
     */
-    function InputBox(emoji, div, maxLen, showErrMessage) {
+    function InputBox(emoji, publish, div, maxLen, showErrMessage) {
         if (div === void 0) { div = "tweetCommentForm"; }
         if (maxLen === void 0) { maxLen = 250; }
         if (showErrMessage === void 0) { showErrMessage = function (msg) {
@@ -252,7 +252,7 @@ var InputBox = /** @class */ (function () {
         var container = document.getElementById(div);
         var form = document.createElement("div");
         form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" placeholder=\"\u6211\u6709\u8BDD\u8981\u8BF4\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button class=\"ui primary right floated small button disabled\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
+        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" placeholder=\"\u6211\u6709\u8BDD\u8981\u8BF4\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" class=\"ui primary right floated small button\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
         container.appendChild(form);
         document.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
         var inputBox = this;
@@ -262,8 +262,11 @@ var InputBox = /** @class */ (function () {
         document.getElementById("toolbox-emoji").onclick = function () {
             inputBox.emojiBox.show();
         };
+        document.getElementById("publish").onclick = function () {
+            publish(inputBox.commentContent);
+        };
         this.commentTextarea = area;
-        this.commentContent = "";
+        this.counter = counter;
         if (area.addEventListener) {
             area.addEventListener('input', function () {
                 // event handling code for sane browsers
@@ -277,6 +280,13 @@ var InputBox = /** @class */ (function () {
             });
         }
     }
+    Object.defineProperty(InputBox.prototype, "commentContent", {
+        get: function () {
+            return this.commentTextarea.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(InputBox.prototype, "commentContentIsEmpty", {
         get: function () {
             return 0 === this.commentContent.length;
@@ -302,7 +312,7 @@ var InputBox = /** @class */ (function () {
             selectRange
                 .of(this.commentTextarea)
                 .insertAfterText(e);
-            this.commentContent = this.commentTextarea.value;
+            this.counter.innerHTML = this.commentCountText;
         }
     };
     InputBox.prototype.reachMaxSize = function (append) {

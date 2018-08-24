@@ -34,5 +34,7 @@
 	(new emoji.Render()).rendering(content, display);
 
 	var src = JSON.parse(emoji.GET("./emoji.php"));
-	var inputBox = new InputBox(src);
+	var inputBox = new InputBox(src, function(text) {
+		(new emoji.Render()).rendering(text, display);
+	});
 </script>
