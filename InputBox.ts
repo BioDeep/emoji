@@ -48,14 +48,14 @@
                     <a id="toolbox-emoji" class="item">
                         <i class="smile icon"></i>插入表情</a>
                 </div>
-                <div id="tweet-count">0/${this.commentMaxLength}</div>
+                <div id="tweet-count" style="float: right;position: relative;right: 100px;">0/${this.commentMaxLength}</div>
                 <!--
                     <div class="ui mini checkbox pub-tweet-checkbox">
                         <input id="pubTweet" type="checkbox" class="hidden">
                         <label for="pubTweet">在动态中显示</label>
                     </div>
                 -->
-                <button id="publish" class="ui primary right floated small button">发布评论</button>
+                <button id="publish" style="position: relative;right: -40px;" class="ui primary right floated small button">发布评论</button>
             </div>`;
 
         container.appendChild(form);
