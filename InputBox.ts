@@ -54,9 +54,9 @@
                 -->
                 <button class="ui primary right floated small button disabled">发布评论</button>
             </div>`;
-
-        (<HTMLElement>(<any>form).getElementById("toolbox")).appendChild(this.emojiBox.emojiGrid);
+        
         container.appendChild(form);
+        (<HTMLElement>document.getElementById("toolbox")).appendChild(this.emojiBox.emojiGrid);
 
         this.commentTextarea = (<any>form).getElementById("input-textarea");
     }

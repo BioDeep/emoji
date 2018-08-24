@@ -49,6 +49,7 @@ class EmojiBox {
         container.appendChild(wrapper);
 
         this.emojiGrid = container;
+        this.hide();
     }
 
     public show(): void {
