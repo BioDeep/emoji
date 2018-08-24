@@ -58,7 +58,7 @@ declare class EmojiBox {
     /**
      * @param ncols 每一行之中的emoji的数量
     */
-    constructor(emojiEntry: object);
+    constructor(emojiEntry: object, insertEmoji: (emoji: string) => void);
     show(): void;
     hide(): void;
 }

@@ -11,7 +11,7 @@ class EmojiBox {
     /**
      * @param ncols 每一行之中的emoji的数量
     */
-    public constructor(emojiEntry: object) {
+    public constructor(emojiEntry: object, inputBox: InputBox) {
         var container: HTMLDivElement = document.createElement("div");
         var wrapper: HTMLDivElement = document.createElement("div");
         var menu: HTMLDivElement = document.createElement("div");
@@ -36,8 +36,11 @@ class EmojiBox {
             item.title = title;
             item.setAttribute("data-emoji", name);
             item.classList.add("emoji-item");
-            item.innerHTML = emojiSVG.getSVG(name);
-            item.getElementsByTagName("svg")[0].setAttribute("height", "1.5em");
+            item.innerHTML = `<a id="${name}" href="javascript:void(0)" target="__blank">${emojiSVG.getSVG(name)}</a>`;
+            item.getElementsByTagName("svg")[0].setAttribute("height", "1.25em");
+            item.getElementsByTagName("a")[0].onclick = function () {
+                inputBox.insertEmoji(this.id);
+            }
 
             col.appendChild(item);
             grid.appendChild(col);

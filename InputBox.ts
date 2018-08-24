@@ -29,7 +29,7 @@
 
         this.commentMaxLength = maxLen;
         this.showErrMessage = showErrMessage;
-        this.emojiBox = new EmojiBox(emoji);
+        this.emojiBox = new EmojiBox(emoji, this);
 
         var container = document.getElementById(div);
         var form: HTMLElement = document.createElement("div");
@@ -40,9 +40,9 @@
                 <textarea id="input-textarea" rows="5" placeholder="我有话要说" class="tweet-comment-textarea disabled-resize">
                 </textarea>
             </div>
-            <div class="field foot-bar">
+            <div class="field foot-bar" style="width: 100%; text-align: left;">
                 <div id="toolbox" class="ui horizontal link small list toolbox">
-                    <a data-popup="toolbox-emoji" class="item">
+                    <a id="toolbox-emoji" class="item">
                         <i class="smile icon"></i>插入表情</a>
                 </div>
                 <div id="tweet-count">0/${this.commentMaxLength}</div>
@@ -54,11 +54,33 @@
                 -->
                 <button class="ui primary right floated small button disabled">发布评论</button>
             </div>`;
-        
+
         container.appendChild(form);
         (<HTMLElement>document.getElementById("toolbox")).appendChild(this.emojiBox.emojiGrid);
 
-        this.commentTextarea = (<any>form).getElementById("input-textarea");
+        var inputBox: InputBox = this;
+        var area: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById("input-textarea");
+        var counter: HTMLElement = document.getElementById("tweet-count");
+
+        // 初始化事件交互
+        document.getElementById("toolbox-emoji").onclick = function () {
+            inputBox.emojiBox.show();
+        };
+
+        this.commentTextarea = area;
+        this.commentContent = "";
+
+        if (area.addEventListener) {
+            area.addEventListener('input', function () {
+                // event handling code for sane browsers
+                counter.innerHTML = inputBox.commentCountText;
+            }, false);
+        } else if ((<any>area).attachEvent) {
+            (<any>area).attachEvent('onpropertychange', function () {
+                // IE-specific event handling code
+                counter.innerHTML = inputBox.commentCountText;
+            });
+        }
     }
 
     public focus() {
@@ -84,7 +106,7 @@
         return a || b;
     }
 
-    public insertEmoji(emoji: string) {
+    public insertEmoji(emoji: string): void {
         var name: string = `::${emoji}::`;
 
         this.insertContent(name);

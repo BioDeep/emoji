@@ -189,7 +189,7 @@ var EmojiBox = /** @class */ (function () {
     /**
      * @param ncols 每一行之中的emoji的数量
     */
-    function EmojiBox(emojiEntry) {
+    function EmojiBox(emojiEntry, inputBox) {
         var container = document.createElement("div");
         var wrapper = document.createElement("div");
         var menu = document.createElement("div");
@@ -211,8 +211,11 @@ var EmojiBox = /** @class */ (function () {
             item.title = title;
             item.setAttribute("data-emoji", name);
             item.classList.add("emoji-item");
-            item.innerHTML = emojiSVG.getSVG(name);
-            item.getElementsByTagName("svg")[0].setAttribute("height", "1.5em");
+            item.innerHTML = "<a id=\"" + name + "\" href=\"javascript:void(0)\" target=\"__blank\">" + emojiSVG.getSVG(name) + "</a>";
+            item.getElementsByTagName("svg")[0].setAttribute("height", "1.25em");
+            item.getElementsByTagName("a")[0].onclick = function () {
+                inputBox.insertEmoji(this.id);
+            };
             col.appendChild(item);
             grid.appendChild(col);
         });
@@ -245,14 +248,34 @@ var InputBox = /** @class */ (function () {
         }; }
         this.commentMaxLength = maxLen;
         this.showErrMessage = showErrMessage;
-        this.emojiBox = new EmojiBox(emoji);
+        this.emojiBox = new EmojiBox(emoji, this);
         var container = document.getElementById(div);
         var form = document.createElement("div");
         form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" placeholder=\"\u6211\u6709\u8BDD\u8981\u8BF4\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a data-popup=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button class=\"ui primary right floated small button disabled\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
+        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" placeholder=\"\u6211\u6709\u8BDD\u8981\u8BF4\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button class=\"ui primary right floated small button disabled\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
         container.appendChild(form);
         document.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
-        this.commentTextarea = form.getElementById("input-textarea");
+        var inputBox = this;
+        var area = document.getElementById("input-textarea");
+        var counter = document.getElementById("tweet-count");
+        // 初始化事件交互
+        document.getElementById("toolbox-emoji").onclick = function () {
+            inputBox.emojiBox.show();
+        };
+        this.commentTextarea = area;
+        this.commentContent = "";
+        if (area.addEventListener) {
+            area.addEventListener('input', function () {
+                // event handling code for sane browsers
+                counter.innerHTML = inputBox.commentCountText;
+            }, false);
+        }
+        else if (area.attachEvent) {
+            area.attachEvent('onpropertychange', function () {
+                // IE-specific event handling code
+                counter.innerHTML = inputBox.commentCountText;
+            });
+        }
     }
     Object.defineProperty(InputBox.prototype, "commentContentIsEmpty", {
         get: function () {
