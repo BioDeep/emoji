@@ -27,7 +27,7 @@
         return curPos;
     }
 
-    public setCurPos(position) {
+    public setCurPos(position: number) {
         var t;
         var input = this.element;
 
@@ -53,28 +53,29 @@
         return text;
     }
 
-    public setSelectText(e, t) {
-        var n, c;
+    public setSelectText(e: number, t: number) {
+        var n: number;
+        var c;
         var input = this.element;
 
-        e = parseInt(e),
-            t = parseInt(t),
-            (n = input.value.length) && (e || (e = 0),
-                t || (t = n),
-                n < e && (e = n),
-                n < t && (t = n),
-                e < 0 && (e = n + e),
-                t < 0 && (t = n + t),
-                (<any>input).createTextRange ? ((c = (<any>input).createTextRange()).moveStart("character", -n),
-                    c.moveEnd("character", -n),
-                    c.moveStart("character", e),
-                    c.moveEnd("character", t),
-                    c.select()) : (input.setSelectionRange(e, t),
-                        input.focus()))
+        (n = input.value.length) && (e || (e = 0),
+            t || (t = n),
+            n < e && (e = n),
+            n < t && (t = n),
+            e < 0 && (e = n + e),
+            t < 0 && (t = n + t),
+            (<any>input).createTextRange ? ((c = (<any>input).createTextRange()).moveStart("character", -n),
+                c.moveEnd("character", -n),
+                c.moveStart("character", e),
+                c.moveEnd("character", t),
+                c.select()) : (input.setSelectionRange(e, t),
+                    input.focus()))
     }
 
     public insertAfterText(e: string) {
-        var t, n, c;
+        var t: number;
+        var n: number;
+        var c: number;
         var input: HTMLInputElement = this.element;
 
         (<any>document).selection ?
