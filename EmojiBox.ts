@@ -13,19 +13,16 @@ class EmojiBox {
     */
     public constructor(emojiEntry: object, inputBox: InputBox) {
         var container: HTMLDivElement = document.createElement("div");
-        var wrapper: HTMLDivElement = document.createElement("div");
-        var menu: HTMLDivElement = document.createElement("div");
+        var wrapper: HTMLDivElement = document.createElement("div");      
         var list: HTMLDivElement = document.createElement("div");
         var grid: HTMLDivElement = document.createElement("div");
         var emojiSVG: emoji.Resource = new emoji.Resource();
 
         container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
         container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
-        wrapper.classList.add("emoji-wrapper");
-        menu.classList.add("ui", "secondary", "pointing", "menu");
-        menu.innerHTML = `<a class="item active">Emoji</a>`;
+        wrapper.classList.add("emoji-wrapper");      
         list.classList.add("emoji-list");
-        grid.classList.add("ui", "ten", "column", "padded", "grid");
+        grid.classList.add("ui", "eight", "column", "padded", "grid");
 
         Object.keys(emojiEntry).forEach(name => {
             var title: string = emojiEntry[name];
@@ -47,8 +44,7 @@ class EmojiBox {
         });
 
         list.appendChild(grid);
-        wrapper.appendChild(list);
-        wrapper.appendChild(menu);
+        wrapper.appendChild(list);     
         container.appendChild(wrapper);
 
         this.emojiGrid = container;

@@ -202,17 +202,14 @@ var EmojiBox = /** @class */ (function () {
     function EmojiBox(emojiEntry, inputBox) {
         var container = document.createElement("div");
         var wrapper = document.createElement("div");
-        var menu = document.createElement("div");
         var list = document.createElement("div");
         var grid = document.createElement("div");
         var emojiSVG = new emoji.Resource();
         container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
         container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
         wrapper.classList.add("emoji-wrapper");
-        menu.classList.add("ui", "secondary", "pointing", "menu");
-        menu.innerHTML = "<a class=\"item active\">Emoji</a>";
         list.classList.add("emoji-list");
-        grid.classList.add("ui", "ten", "column", "padded", "grid");
+        grid.classList.add("ui", "eight", "column", "padded", "grid");
         Object.keys(emojiEntry).forEach(function (name) {
             var title = emojiEntry[name];
             var col = document.createElement("div");
@@ -231,7 +228,6 @@ var EmojiBox = /** @class */ (function () {
         });
         list.appendChild(grid);
         wrapper.appendChild(list);
-        wrapper.appendChild(menu);
         container.appendChild(wrapper);
         this.emojiGrid = container;
         this.hide();
