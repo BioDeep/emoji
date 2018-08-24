@@ -5,12 +5,16 @@ $emoji = [];
 
 foreach (new DirectoryIterator($src) as $file) {
     if ($file->isFile()) {
-        echo $file->getFilename() . "\n";
-        
-        $name = basename($file->getFilename());
-        $name = explode(".", $name);
-        $emoji[$name] = $name;
+        $name = explode(".", $file->getFilename());
+        $ext  = $name[count($name) - 1];
+
+        if ($ext === "svg") {
+            $name = $name[0];
+            $emoji[$name] = $name;
+        }
     }
 }
+
+header("content-type: application/json; charset=utf-8");
 
 echo json_encode($emoji);
