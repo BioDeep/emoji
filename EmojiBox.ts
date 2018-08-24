@@ -7,20 +7,21 @@
 class EmojiBox {
 
     public emojiGrid: HTMLDivElement;
+    public statusHidden: boolean;
 
     /**
      * @param ncols 每一行之中的emoji的数量
     */
     public constructor(emojiEntry: object, inputBox: InputBox) {
         var container: HTMLDivElement = document.createElement("div");
-        var wrapper: HTMLDivElement = document.createElement("div");      
+        var wrapper: HTMLDivElement = document.createElement("div");
         var list: HTMLDivElement = document.createElement("div");
         var grid: HTMLDivElement = document.createElement("div");
         var emojiSVG: emoji.Resource = new emoji.Resource();
 
         container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
         container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
-        wrapper.classList.add("emoji-wrapper");      
+        wrapper.classList.add("emoji-wrapper");
         list.classList.add("emoji-list");
         grid.classList.add("ui", "eight", "column", "padded", "grid");
 
@@ -44,7 +45,7 @@ class EmojiBox {
         });
 
         list.appendChild(grid);
-        wrapper.appendChild(list);     
+        wrapper.appendChild(list);
         container.appendChild(wrapper);
 
         this.emojiGrid = container;
@@ -52,11 +53,13 @@ class EmojiBox {
     }
 
     public show(): void {
+        this.statusHidden = false;
         this.emojiGrid.classList.remove("hidden");
         this.emojiGrid.classList.add("visible");
     }
 
     public hide(): void {
+        this.statusHidden = true;
         this.emojiGrid.classList.remove("visible");
         this.emojiGrid.classList.add("hidden");
     }

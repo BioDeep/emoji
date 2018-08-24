@@ -233,10 +233,12 @@ var EmojiBox = /** @class */ (function () {
         this.hide();
     }
     EmojiBox.prototype.show = function () {
+        this.statusHidden = false;
         this.emojiGrid.classList.remove("hidden");
         this.emojiGrid.classList.add("visible");
     };
     EmojiBox.prototype.hide = function () {
+        this.statusHidden = true;
         this.emojiGrid.classList.remove("visible");
         this.emojiGrid.classList.add("hidden");
     };
@@ -257,8 +259,9 @@ var InputBox = /** @class */ (function () {
         this.emojiBox = new EmojiBox(emoji, this);
         var container = document.getElementById(div);
         var form = document.createElement("div");
+        var labelPadding = "padding-top: 0.5em;";
         form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" placeholder=\"\u5199\u4E0B\u8BC4\u8BBA\" rows=\"5\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\" style=\"float: right;position: relative;right: 100px;\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" style=\"position: relative;right: -40px;\" class=\"ui primary right floated small button\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
+        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" placeholder=\"\u5199\u4E0B\u8BC4\u8BBA\" rows=\"5\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" style=\"" + labelPadding + "\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\" style=\"" + labelPadding + " float: right; position: relative; right: 125px;\">\n                    0/" + this.commentMaxLength + "\n                </div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" style=\"position: relative; right: -40px;\" class=\"ui primary right floated small button\">\n                    \u53D1\u5E03\u8BC4\u8BBA\n                </button>\n            </div>";
         container.appendChild(form);
         document.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
         var inputBox = this;
