@@ -4,13 +4,16 @@
 <script type="text/javascript" src="http://cdn.biodeep.cn/vendor/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="http://cdn.biodeep.cn/styles/semantic/semantic.min.js"></script>
 
-<div id="text">
-</div>
+<br />
+<br />
+<br />
+<br />
 
-<br />
-<br />
-<br />
-<br />
+<center>
+	<div style="width: 65%" id="text">
+	</div>
+</center>
+
 <br />
 <br />
 <br />
@@ -34,7 +37,7 @@
 	(new emoji.Render()).rendering(content, display);
 
 	var src = JSON.parse(emoji.GET("./emoji.php"));
-	var inputBox = new InputBox(src, function(text) {
+	var inputBox = new InputBox(src, function (text) {
 		(new emoji.Render()).rendering(text, display);
 	});
 </script>

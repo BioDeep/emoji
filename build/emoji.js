@@ -81,12 +81,14 @@ var emoji;
             // 20180821 js的正则表达式之中必须要加上g全局选项，才会匹配出所有结果
             // 否则只会匹配出一个结果
             var pattern = /[:]{2}[a-zA-Z0-9]+[:]{2}/g;
-            var keys = text.match(pattern).reverse();
-            var len = keys.length;
-            keys = Render.uniq(keys);
-            console.log(text);
-            console.log(keys);
-            for (var i = 0; i < len; i++) {
+            var keys = text.match(pattern);
+            if (!keys) {
+                return text;
+            }
+            else {
+                keys = Render.uniq(keys);
+            }
+            for (var i = 0; i < keys.length; i++) {
                 // ::smile::
                 var key = keys[i];
                 var name = key + "";
