@@ -93,6 +93,14 @@ module emoji {
          * 例如： ``::smile::``
         */
         public renderText(text: string): string {
+            if (!text) {
+                return "";
+            } else {
+                return this.renderTextImpl(text);
+            }
+        }
+
+        private renderTextImpl(text: string) {
             // 20180821 js的正则表达式之中必须要加上g全局选项，才会匹配出所有结果
             // 否则只会匹配出一个结果
             var pattern = /[:]{2}[a-zA-Z0-9]+[:]{2}/g;
