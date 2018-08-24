@@ -1,8 +1,20 @@
+<link rel="stylesheet" href="http://cdn.biodeep.cn/styles/semantic/semantic.min.css" />
+
 <script type="text/javascript" src="./build/emoji.js"></script>
+<script type="text/javascript" src="http://cdn.biodeep.cn/styles/semantic/semantic.min.js"></script>
 
 <div id="text">
 </div>
 
+<div id="tweetCommentForm">
+</div>
+
 <script type="text/javascript">
-	(new emoji.Render()).rendering("::1f603::, Yes I'm ::1f604::. This emoji ::notexists:: is not exists, ::1f627::.", document.getElementById("text"));
+	var display = document.getElementById("text");
+	var content = "::1f603::, Yes I'm ::1f604::. This emoji ::notexists:: is not exists, ::1f627::.";
+
+	(new emoji.Render()).rendering(content, display);
+
+	var src = JSON.parse(emoji.GET("./emoji.php"));
+	var inputBox = new InputBox(src);
 </script>
