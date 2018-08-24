@@ -13,7 +13,13 @@ declare module emoji {
         /**
          * 将所给定的文本之中的emoji渲染出来
         */
-        rendering(text: string): string;
+        rendering(text: string, div: HTMLElement): void;
+        /**
+         * 首先进行正则匹配，找出所有可能的emoji占位符
+         * 假设emoji的名字只能够由字符和数字组成
+         * 例如： ``::smile::``
+        */
+        renderText(text: string): string;
         private static uniq(a);
     }
     /**
@@ -41,4 +47,26 @@ declare module emoji {
         */
         writeCache(key: string, svg: string): void;
     }
+}
+declare class InputBox {
+    EmojiBox: HTMLElement;
+    commentTextarea: HTMLInputElement;
+    commentContent: string;
+    readonly commentMaxLength: number;
+    readonly showErrMessage: (msg: string) => void;
+    constructor(maxLen?: number, showErrMessage?: (msg: string) => void);
+    focus(): void;
+    insertContent(e: string): void;
+    private reachMaxSize(append);
+    insertEmoji(emoji: string): void;
+}
+declare class selectRange {
+    private element;
+    constructor(e: HTMLInputElement);
+    static of(e: HTMLInputElement): selectRange;
+    getCurPos(): number;
+    setCurPos(position: number): void;
+    getSelectText(): string;
+    setSelectText(e: number, t: number): void;
+    insertAfterText(e: string): void;
 }
