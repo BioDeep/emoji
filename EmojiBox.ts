@@ -23,7 +23,7 @@ class EmojiBox {
         container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
         wrapper.classList.add("emoji-wrapper");
         menu.classList.add("ui", "secondary", "pointing", "menu");
-        menu.innerHTML = `<a class="item active">People</a>`;
+        menu.innerHTML = `<a class="item active">Emoji</a>`;
         list.classList.add("emoji-list");
         grid.classList.add("ui", "ten", "column", "padded", "grid");
 

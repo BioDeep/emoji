@@ -40,7 +40,7 @@
         form.classList.add("ui", "form", "tweet-form");
         form.innerHTML = `
             <div class="field">
-                <textarea id="input-textarea" rows="5" placeholder="我有话要说" class="tweet-comment-textarea disabled-resize">
+                <textarea id="input-textarea" rows="5" class="tweet-comment-textarea disabled-resize">
                 </textarea>
             </div>
             <div class="field foot-bar" style="width: 100%; text-align: left;">
