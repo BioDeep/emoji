@@ -269,10 +269,24 @@ var InputBox = /** @class */ (function () {
         var counter = document.getElementById("tweet-count");
         // 初始化事件交互
         document.getElementById("toolbox-emoji").onclick = function () {
-            inputBox.emojiBox.show();
+            if (inputBox.emojiBox.statusHidden) {
+                inputBox.emojiBox.show();
+            }
+            else {
+                inputBox.emojiBox.hide();
+            }
         };
         document.getElementById("publish").onclick = function () {
-            publish(inputBox.commentContent);
+            if (inputBox.commentContentIsEmpty) {
+                inputBox.showErrMessage("发布的内容不可以为空！");
+            }
+            else {
+                publish(inputBox.commentContent);
+            }
+        };
+        // not working?
+        this.emojiBox.emojiGrid.onblur = function () {
+            inputBox.emojiBox.hide();
         };
         this.commentTextarea = area;
         this.commentTextarea.innerText = "";
