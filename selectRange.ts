@@ -10,30 +10,49 @@
         return e ? new selectRange(e) : <any>{};
     }
 
-    public getCurPos() {
-        var e, c = 0;
+    public getCurPos(): number {
+        var curPos: number = 0;
         var input = this.element;
 
-        return (<any>document).selection ? (input.focus(),
-            (e = (<any>document).selection.createRange()).moveStart("character", -input.value.length),
-            c = e.text.length) : (input.selectionStart || 0 == input.selectionStart) && (c = input.selectionStart),
-            c
+        if ((<any>document).selection) {
+            input.focus();
+
+            var range: any = (<any>document).selection.createRange();
+            range.moveStart("character", -input.value.length);
+            curPos = range.text.length;
+        } else {
+            (input.selectionStart || 0 == input.selectionStart) && (curPos = input.selectionStart);
+        }
+
+        return curPos;
     }
-    public setCurPos(e) {
+
+    public setCurPos(position) {
         var t;
         var input = this.element;
+
         input.setSelectionRange ? (input.focus(),
-            input.setSelectionRange(e, e)) : (<any>input).createTextRange && ((t = (<any>input).createTextRange()).collapse(!0),
-                t.moveEnd("character", e),
-                t.moveStart("character", e),
+            input.setSelectionRange(position, position)) : (<any>input).createTextRange && ((t = (<any>input).createTextRange()).collapse(!0),
+                t.moveEnd("character", position),
+                t.moveStart("character", position),
                 t.select())
     }
-    public getSelectText() {
-        var e, t = "";
-        return window.getSelection ? e = window.getSelection() : (<any>document).selection && (e = (<any>document).selection.createRange()),
-            (t = e.text) || (t = e),
-            t
+
+    public getSelectText(): string {
+        var range;
+        var text: string = "";
+
+        if (window.getSelection) {
+            range = window.getSelection();
+        } else {
+            (<any>document).selection && (range = (<any>document).selection.createRange());
+        }
+
+        (text = range.text) || (text = range);
+
+        return text;
     }
+
     public setSelectText(e, t) {
         var n, c;
         var input = this.element;
@@ -53,7 +72,8 @@
                     c.select()) : (input.setSelectionRange(e, t),
                         input.focus()))
     }
-    public insertAfterText(e) {
+
+    public insertAfterText(e: string) {
         var t, n, c;
         var input: HTMLInputElement = this.element;
 
