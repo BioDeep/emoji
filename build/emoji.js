@@ -254,7 +254,7 @@ var InputBox = /** @class */ (function () {
         var container = document.getElementById(div);
         var form = document.createElement("div");
         form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" rows=\"5\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" class=\"ui primary right floated small button\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
+        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" placeholder=\"\u5199\u4E0B\u8BC4\u8BBA\" rows=\"5\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\">0/" + this.commentMaxLength + "</div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" class=\"ui primary right floated small button\">\u53D1\u5E03\u8BC4\u8BBA</button>\n            </div>";
         container.appendChild(form);
         document.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
         var inputBox = this;
@@ -268,6 +268,7 @@ var InputBox = /** @class */ (function () {
             publish(inputBox.commentContent);
         };
         this.commentTextarea = area;
+        this.commentTextarea.innerText = "";
         this.counter = counter;
         if (area.addEventListener) {
             area.addEventListener('input', function () {

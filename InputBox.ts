@@ -40,7 +40,7 @@
         form.classList.add("ui", "form", "tweet-form");
         form.innerHTML = `
             <div class="field">
-                <textarea id="input-textarea" rows="5" class="tweet-comment-textarea disabled-resize">
+                <textarea id="input-textarea" placeholder="写下评论" rows="5" class="tweet-comment-textarea disabled-resize">
                 </textarea>
             </div>
             <div class="field foot-bar" style="width: 100%; text-align: left;">
@@ -74,6 +74,7 @@
         }
 
         this.commentTextarea = area;
+        this.commentTextarea.innerText = "";
         this.counter = counter;
 
         if (area.addEventListener) {
