@@ -35,7 +35,7 @@
             input.setSelectionRange(position, position)) : (<any>input).createTextRange && ((t = (<any>input).createTextRange()).collapse(!0),
                 t.moveEnd("character", position),
                 t.moveStart("character", position),
-                t.select())
+                t.select());
     }
 
     public getSelectText(): string {
@@ -69,7 +69,7 @@
                 c.moveStart("character", e),
                 c.moveEnd("character", t),
                 c.select()) : (input.setSelectionRange(e, t),
-                    input.focus()))
+                    input.focus()));
     }
 
     public insertAfterText(e: string) {
@@ -87,6 +87,6 @@
                     input.focus(),
                     input.selectionStart = t + e.length,
                     input.selectionEnd = t + e.length,
-                    input.scrollTop = c) : (input.value += e, input.focus())
+                    input.scrollTop = c) : (input.value += e, input.focus());
     }
 }

@@ -1,11 +1,19 @@
 ﻿class InputBox {
 
-    public EmojiBox: HTMLElement;
+    public emojiBox: EmojiBox;
     public commentTextarea: HTMLInputElement;
     public commentContent: string;
 
     public readonly commentMaxLength: number;
     public readonly showErrMessage: (msg: string) => void;
+
+    public get commentContentIsEmpty(): boolean {
+        return 0 === this.commentContent.length;
+    }
+
+    public get commentCountText(): string {
+        return this.commentContent.length + "/" + this.commentMaxLength;
+    }
 
     public constructor(
         maxLen: number = 250,
@@ -19,7 +27,7 @@
     }
 
     public focus() {
-        this.commentTextarea.focus()
+        this.commentTextarea.focus();
     }
 
     public insertContent(e: string) {
@@ -45,6 +53,6 @@
         var name: string = `::${emoji}::`;
 
         this.insertContent(name);
-        this.EmojiBox.style.display = "none";
+        this.emojiBox.hide();
     }
 }
