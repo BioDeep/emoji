@@ -258,7 +258,7 @@ var InputBox = /** @class */ (function () {
             class: "field foot-bar",
             style: "width: 100%; text-align: left;"
         }).display("<div id=\"toolbox\" style=\"" + InputBox.labelPadding + "\" class=\"ui horizontal link small list toolbox\">\n                        <a id=\"toolbox-emoji\" class=\"item\">\n                            <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                    </div>\n                    <div id=\"tweet-count\" style=\"" + InputBox.labelPadding + " float: right; position: relative; right: 125px;\">\n                        0/" + this.commentMaxLength + "\n                    </div>\n                    <!--\n                        <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                            <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                            <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                        </div>\n                    -->\n                    <button id=\"publish\" style=\"position: relative; right: -40px;\" class=\"ui primary right floated small button\">\n                        \u53D1\u5E03\u8BC4\u8BBA\n                    </button>"));
-        container.appendChild(form);
+        container.appendChild(form.HTMLElement);
         $ts("#toolbox").appendChild(this.emojiBox.emojiGrid);
         var inputBox = this;
         var area = $ts("#input-textarea");

@@ -38,7 +38,7 @@
         this.showErrMessage = showErrMessage;
         this.emojiBox = new EmojiBox(emoji, this);
 
-        var container = $ts("#" + div);
+        var container: HTMLElement = $ts("#" + div);
         var form: HTMLTsElement = $ts("<div>", {
             class: "ui form tweet-form"
         }).asExtends;
@@ -68,7 +68,7 @@
                         发布评论
                     </button>`));
 
-        container.appendChild(form);
+        container.appendChild(form.HTMLElement);
 
         (<HTMLElement>$ts("#toolbox")).appendChild(this.emojiBox.emojiGrid);
 
