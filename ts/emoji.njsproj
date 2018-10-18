@@ -39,7 +39,6 @@
     <TypeScriptCompile Include="emoji.ts" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
-    <Content Include="README.md" />
     <TypeScriptCompile Include="selectRange.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

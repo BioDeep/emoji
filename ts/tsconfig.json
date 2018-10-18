@@ -6,7 +6,7 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "obj/",
-    "outFile": "./build/emoji.js",
+    "outFile": "../build/emoji.js",
     "declaration": true
   },
   "exclude": [

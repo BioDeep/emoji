@@ -20,7 +20,6 @@ declare module emoji {
         */
         renderText(text: string): string;
         private renderTextImpl;
-        private static uniq;
     }
     /**
      *
@@ -72,7 +71,10 @@ declare class InputBox {
     readonly commentContent: string;
     readonly commentContentIsEmpty: boolean;
     readonly commentCountText: string;
+    static readonly labelPadding: string;
     /**
+     * 调用这个构造函数的时候将会自动创建评论框
+     *
      * @param div 将要被插入输入框的div元素
     */
     constructor(emoji: object, publish: (content: string) => void, div?: string, maxLen?: number, showErrMessage?: (msg: string) => void);
