@@ -1,3 +1,4 @@
+/// <reference path="../../../vendor/Linq.js/linq.d.ts" />
 declare module emoji {
     /**
      * 获取当前脚本的URL

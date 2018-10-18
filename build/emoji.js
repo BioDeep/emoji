@@ -1,4 +1,4 @@
-/// <reference path="../../vendor/Linq.js/linq.d.ts" />
+/// <reference path="../../../vendor/Linq.js/linq.d.ts" />
 var emoji;
 (function (emoji) {
     // 假设一个emoji的代码是 ::smile::
@@ -139,7 +139,7 @@ var emoji;
             else {
                 // 不存在则请求服务器资源
                 // 进行同步请求
-                var svg = emoji.GET(emoji.Resource.svgURL(name));
+                var svg = HttpHelpers.GET(emoji.Resource.svgURL(name));
                 this.writeCache(name, svg);
                 return svg;
             }
