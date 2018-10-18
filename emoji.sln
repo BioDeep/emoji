@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27906.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "emoji", "emoji.njsproj", "{B90437F1-B17E-4D3A-BAC4-8EC3EAF6D408}"
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "emoji", "ts\emoji.njsproj", "{B90437F1-B17E-4D3A-BAC4-8EC3EAF6D408}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

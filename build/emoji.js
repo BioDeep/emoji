@@ -1,3 +1,4 @@
+/// <reference path="../../vendor/Linq.js/linq.d.ts" />
 var emoji;
 (function (emoji) {
     // 假设一个emoji的代码是 ::smile::
@@ -38,19 +39,6 @@ var emoji;
      * 当前的URL的网络位置
     */
     var myURL = emoji.scriptURL();
-    function GET(url) {
-        var request = new XMLHttpRequest();
-        // `false` makes the request synchronous
-        request.open('GET', url, false);
-        request.send(null);
-        if (request.status === 200) {
-            return request.responseText;
-        }
-        else {
-            return "";
-        }
-    }
-    emoji.GET = GET;
     /**
      * 将文档之中的符合规则的占位符都替换为emoji
     */
@@ -66,7 +54,7 @@ var emoji;
             div.innerHTML = html;
             var emojiSVG = div.getElementsByTagName("svg");
             var len = emojiSVG.length;
-            console.log(emojiSVG);
+            // console.log(emojiSVG);
             for (var i = 0; i < len; i++) {
                 var svg = emojiSVG[i];
                 svg.setAttribute("height", "1.125em");
@@ -94,7 +82,7 @@ var emoji;
                 return text;
             }
             else {
-                keys = Render.uniq(keys);
+                keys = Strings.uniq(keys);
             }
             for (var i = 0; i < keys.length; i++) {
                 // ::smile::
@@ -112,12 +100,6 @@ var emoji;
                 }
             }
             return text;
-        };
-        Render.uniq = function (a) {
-            var seen = {};
-            return a.filter(function (item) {
-                return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-            });
         };
         return Render;
     }());
@@ -200,21 +182,26 @@ var EmojiBox = /** @class */ (function () {
      * @param ncols 每一行之中的emoji的数量
     */
     function EmojiBox(emojiEntry, inputBox) {
-        var container = document.createElement("div");
-        var wrapper = document.createElement("div");
-        var list = document.createElement("div");
-        var grid = document.createElement("div");
         var emojiSVG = new emoji.Resource();
-        container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
-        container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
-        wrapper.classList.add("emoji-wrapper");
-        list.classList.add("emoji-list");
-        grid.classList.add("ui", "eight", "column", "padded", "grid");
+        var container = $ts("<div>", {
+            class: "ui popup toolbox-popup toolbox-emoji top left transition",
+            style: "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;"
+        });
+        var wrapper = $ts("<div>", {
+            class: "emoji-wrapper"
+        });
+        var list = $ts("<div>", {
+            class: "emoji-list"
+        });
+        var grid = $ts("<div>", {
+            class: "ui eight column padded grid"
+        });
         Object.keys(emojiEntry).forEach(function (name) {
             var title = emojiEntry[name];
-            var col = document.createElement("div");
+            var col = $ts("<div>", {
+                class: "column"
+            }).asExtends;
             var item = document.createElement("div");
-            col.classList.add("column");
             item.title = title;
             item.setAttribute("data-emoji", name);
             item.classList.add("emoji-item");
@@ -223,8 +210,7 @@ var EmojiBox = /** @class */ (function () {
             item.getElementsByTagName("a")[0].onclick = function () {
                 inputBox.insertEmoji(this.id);
             };
-            col.appendChild(item);
-            grid.appendChild(col);
+            grid.appendChild(col.display(item).HTMLElement);
         });
         list.appendChild(grid);
         wrapper.appendChild(list);
@@ -246,6 +232,8 @@ var EmojiBox = /** @class */ (function () {
 }());
 var InputBox = /** @class */ (function () {
     /**
+     * 调用这个构造函数的时候将会自动创建评论框
+     *
      * @param div 将要被插入输入框的div元素
     */
     function InputBox(emoji, publish, div, maxLen, showErrMessage) {
@@ -257,18 +245,26 @@ var InputBox = /** @class */ (function () {
         this.commentMaxLength = maxLen;
         this.showErrMessage = showErrMessage;
         this.emojiBox = new EmojiBox(emoji, this);
-        var container = document.getElementById(div);
-        var form = document.createElement("div");
-        var labelPadding = "padding-top: 0.5em;";
-        form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = "\n            <div class=\"field\">\n                <textarea id=\"input-textarea\" placeholder=\"\u5199\u4E0B\u8BC4\u8BBA\" rows=\"5\" class=\"tweet-comment-textarea disabled-resize\">\n                </textarea>\n            </div>\n            <div class=\"field foot-bar\" style=\"width: 100%; text-align: left;\">\n                <div id=\"toolbox\" style=\"" + labelPadding + "\" class=\"ui horizontal link small list toolbox\">\n                    <a id=\"toolbox-emoji\" class=\"item\">\n                        <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                </div>\n                <div id=\"tweet-count\" style=\"" + labelPadding + " float: right; position: relative; right: 125px;\">\n                    0/" + this.commentMaxLength + "\n                </div>\n                <!--\n                    <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                        <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                        <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                    </div>\n                -->\n                <button id=\"publish\" style=\"position: relative; right: -40px;\" class=\"ui primary right floated small button\">\n                    \u53D1\u5E03\u8BC4\u8BBA\n                </button>\n            </div>";
+        var container = $ts("#" + div);
+        var form = $ts("<div>", {
+            class: "ui form tweet-form"
+        }).asExtends;
+        form.append($ts("<div>", { class: "field" }).display($ts("<textarea>", {
+            id: "input-textarea",
+            placeholder: "写下评论",
+            rows: "5",
+            class: "tweet-comment-textarea disabled-resize"
+        }))).append($ts("<div>", {
+            class: "field foot-bar",
+            style: "width: 100%; text-align: left;"
+        }).display("<div id=\"toolbox\" style=\"" + InputBox.labelPadding + "\" class=\"ui horizontal link small list toolbox\">\n                        <a id=\"toolbox-emoji\" class=\"item\">\n                            <i class=\"smile icon\"></i>\u63D2\u5165\u8868\u60C5</a>\n                    </div>\n                    <div id=\"tweet-count\" style=\"" + InputBox.labelPadding + " float: right; position: relative; right: 125px;\">\n                        0/" + this.commentMaxLength + "\n                    </div>\n                    <!--\n                        <div class=\"ui mini checkbox pub-tweet-checkbox\">\n                            <input id=\"pubTweet\" type=\"checkbox\" class=\"hidden\">\n                            <label for=\"pubTweet\">\u5728\u52A8\u6001\u4E2D\u663E\u793A</label>\n                        </div>\n                    -->\n                    <button id=\"publish\" style=\"position: relative; right: -40px;\" class=\"ui primary right floated small button\">\n                        \u53D1\u5E03\u8BC4\u8BBA\n                    </button>"));
         container.appendChild(form);
-        document.getElementById("toolbox").appendChild(this.emojiBox.emojiGrid);
+        $ts("#toolbox").appendChild(this.emojiBox.emojiGrid);
         var inputBox = this;
-        var area = document.getElementById("input-textarea");
-        var counter = document.getElementById("tweet-count");
+        var area = $ts("#input-textarea");
+        var counter = $ts("#tweet-count");
         // 初始化事件交互
-        document.getElementById("toolbox-emoji").onclick = function () {
+        $ts("#toolbox-emoji").onclick = function () {
             if (inputBox.emojiBox.statusHidden) {
                 inputBox.emojiBox.show();
             }
@@ -276,7 +272,7 @@ var InputBox = /** @class */ (function () {
                 inputBox.emojiBox.hide();
             }
         };
-        document.getElementById("publish").onclick = function () {
+        $ts("#publish").onclick = function () {
             if (inputBox.commentContentIsEmpty) {
                 inputBox.showErrMessage("发布的内容不可以为空！");
             }
@@ -349,6 +345,7 @@ var InputBox = /** @class */ (function () {
         this.insertContent(name);
         this.emojiBox.hide();
     };
+    InputBox.labelPadding = "padding-top: 0.5em;";
     return InputBox;
 }());
 var selectRange = /** @class */ (function () {

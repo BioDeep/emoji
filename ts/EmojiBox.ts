@@ -13,24 +13,28 @@ class EmojiBox {
      * @param ncols 每一行之中的emoji的数量
     */
     public constructor(emojiEntry: object, inputBox: InputBox) {
-        var container: HTMLDivElement = document.createElement("div");
-        var wrapper: HTMLDivElement = document.createElement("div");
-        var list: HTMLDivElement = document.createElement("div");
-        var grid: HTMLDivElement = document.createElement("div");
         var emojiSVG: emoji.Resource = new emoji.Resource();
-
-        container.classList.add("ui", "popup", "toolbox-popup", "toolbox-emoji", "top", "left", "transition");
-        container.setAttribute("style", "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;");
-        wrapper.classList.add("emoji-wrapper");
-        list.classList.add("emoji-list");
-        grid.classList.add("ui", "eight", "column", "padded", "grid");
+        var container: HTMLDivElement = $ts("<div>", {
+            class: "ui popup toolbox-popup toolbox-emoji top left transition",
+            style: "top: auto; left: 0px; bottom: 25.9688px; right: auto; display: block !important;"
+        });
+        var wrapper: HTMLDivElement = $ts("<div>", {
+            class: "emoji-wrapper"
+        });
+        var list: HTMLDivElement = $ts("<div>", {
+            class: "emoji-list"
+        });
+        var grid: HTMLDivElement = $ts("<div>", {
+            class: "ui eight column padded grid"
+        });
 
         Object.keys(emojiEntry).forEach(name => {
             var title: string = emojiEntry[name];
-            var col = document.createElement("div");
+            var col: HTMLTsElement = $ts("<div>", {
+                class: "column"
+            }).asExtends;
             var item = document.createElement("div");
 
-            col.classList.add("column");
             item.title = title;
             item.setAttribute("data-emoji", name);
             item.classList.add("emoji-item");
@@ -40,8 +44,7 @@ class EmojiBox {
                 inputBox.insertEmoji(this.id);
             }
 
-            col.appendChild(item);
-            grid.appendChild(col);
+            grid.appendChild(col.display(item).HTMLElement);
         });
 
         list.appendChild(grid);

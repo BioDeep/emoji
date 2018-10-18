@@ -3,7 +3,6 @@ declare module emoji {
      * 获取当前脚本的URL
     */
     function scriptURL(): string;
-    function GET(url: string): string;
     /**
      * 将文档之中的符合规则的占位符都替换为emoji
     */
@@ -20,7 +19,8 @@ declare module emoji {
          * 例如： ``::smile::``
         */
         renderText(text: string): string;
-        private static uniq(a);
+        private renderTextImpl;
+        private static uniq;
     }
     /**
      *
@@ -41,7 +41,7 @@ declare module emoji {
          * 会首先从缓存之中进行查找资源，如果不成功，就会请求服务器，然后将请求结果写入本地缓存
         */
         getSVG(name: string): string;
-        private static svgURL(name);
+        private static svgURL;
         /**
          * 将从服务器得到的数据写入到localstorage和cache变量之中
         */
@@ -55,28 +55,30 @@ declare module emoji {
 */
 declare class EmojiBox {
     emojiGrid: HTMLDivElement;
+    statusHidden: boolean;
     /**
      * @param ncols 每一行之中的emoji的数量
     */
-    constructor(emojiEntry: object, insertEmoji: (emoji: string) => void);
+    constructor(emojiEntry: object, inputBox: InputBox);
     show(): void;
     hide(): void;
 }
 declare class InputBox {
     emojiBox: EmojiBox;
     commentTextarea: HTMLTextAreaElement;
-    commentContent: string;
+    counter: HTMLElement;
     readonly commentMaxLength: number;
     readonly showErrMessage: (msg: string) => void;
+    readonly commentContent: string;
     readonly commentContentIsEmpty: boolean;
     readonly commentCountText: string;
     /**
      * @param div 将要被插入输入框的div元素
     */
-    constructor(emoji: object, div?: string, maxLen?: number, showErrMessage?: (msg: string) => void);
+    constructor(emoji: object, publish: (content: string) => void, div?: string, maxLen?: number, showErrMessage?: (msg: string) => void);
     focus(): void;
     insertContent(e: string): void;
-    private reachMaxSize(append);
+    private reachMaxSize;
     insertEmoji(emoji: string): void;
 }
 declare class selectRange {

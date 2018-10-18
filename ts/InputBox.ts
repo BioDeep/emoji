@@ -19,7 +19,11 @@
         return this.commentContent.length + "/" + this.commentMaxLength;
     }
 
+    static readonly labelPadding: string = "padding-top: 0.5em;";
+
     /**
+     * 调用这个构造函数的时候将会自动创建评论框
+     * 
      * @param div 将要被插入输入框的div元素
     */
     public constructor(emoji: object, publish: (content: string) => void,
@@ -34,51 +38,53 @@
         this.showErrMessage = showErrMessage;
         this.emojiBox = new EmojiBox(emoji, this);
 
-        var container = document.getElementById(div);
-        var form: HTMLElement = document.createElement("div");
-        var labelPadding: string = "padding-top: 0.5em;";
+        var container = $ts("#" + div);
+        var form: HTMLTsElement = $ts("<div>", {
+            class: "ui form tweet-form"
+        }).asExtends;
 
-        form.classList.add("ui", "form", "tweet-form");
-        form.innerHTML = `
-            <div class="field">
-                <textarea id="input-textarea" placeholder="写下评论" rows="5" class="tweet-comment-textarea disabled-resize">
-                </textarea>
-            </div>
-            <div class="field foot-bar" style="width: 100%; text-align: left;">
-                <div id="toolbox" style="${labelPadding}" class="ui horizontal link small list toolbox">
-                    <a id="toolbox-emoji" class="item">
-                        <i class="smile icon"></i>插入表情</a>
-                </div>
-                <div id="tweet-count" style="${labelPadding} float: right; position: relative; right: 125px;">
-                    0/${this.commentMaxLength}
-                </div>
-                <!--
-                    <div class="ui mini checkbox pub-tweet-checkbox">
-                        <input id="pubTweet" type="checkbox" class="hidden">
-                        <label for="pubTweet">在动态中显示</label>
+        form.append($ts("<div>", { class: "field" }).display($ts("<textarea>", {
+            id: "input-textarea",
+            placeholder: "写下评论",
+            rows: "5",
+            class: "tweet-comment-textarea disabled-resize"
+        }))).append($ts("<div>", {
+            class: "field foot-bar",
+            style: "width: 100%; text-align: left;"
+        }).display(`<div id="toolbox" style="${InputBox.labelPadding}" class="ui horizontal link small list toolbox">
+                        <a id="toolbox-emoji" class="item">
+                            <i class="smile icon"></i>插入表情</a>
                     </div>
-                -->
-                <button id="publish" style="position: relative; right: -40px;" class="ui primary right floated small button">
-                    发布评论
-                </button>
-            </div>`;
+                    <div id="tweet-count" style="${InputBox.labelPadding} float: right; position: relative; right: 125px;">
+                        0/${this.commentMaxLength}
+                    </div>
+                    <!--
+                        <div class="ui mini checkbox pub-tweet-checkbox">
+                            <input id="pubTweet" type="checkbox" class="hidden">
+                            <label for="pubTweet">在动态中显示</label>
+                        </div>
+                    -->
+                    <button id="publish" style="position: relative; right: -40px;" class="ui primary right floated small button">
+                        发布评论
+                    </button>`));
 
         container.appendChild(form);
-        (<HTMLElement>document.getElementById("toolbox")).appendChild(this.emojiBox.emojiGrid);
+
+        (<HTMLElement>$ts("#toolbox")).appendChild(this.emojiBox.emojiGrid);
 
         var inputBox: InputBox = this;
-        var area: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById("input-textarea");
-        var counter: HTMLElement = document.getElementById("tweet-count");
+        var area: HTMLTextAreaElement = <HTMLTextAreaElement>$ts("#input-textarea");
+        var counter: HTMLElement = $ts("#tweet-count");
 
         // 初始化事件交互
-        document.getElementById("toolbox-emoji").onclick = function () {
+        $ts("#toolbox-emoji").onclick = function () {
             if (inputBox.emojiBox.statusHidden) {
                 inputBox.emojiBox.show();
             } else {
                 inputBox.emojiBox.hide();
             }
         };
-        document.getElementById("publish").onclick = function () {
+        $ts("#publish").onclick = function () {
             if (inputBox.commentContentIsEmpty) {
                 inputBox.showErrMessage("发布的内容不可以为空！");
             } else {

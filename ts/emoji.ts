@@ -1,3 +1,5 @@
+/// <reference path="../../vendor/Linq.js/linq.d.ts" />
+
 module emoji {
 
     // 假设一个emoji的代码是 ::smile::
@@ -45,20 +47,6 @@ module emoji {
     */
     var myURL: string = emoji.scriptURL();
 
-    export function GET(url: string): string {
-        var request = new XMLHttpRequest();
-
-        // `false` makes the request synchronous
-        request.open('GET', url, false);
-        request.send(null);
-
-        if (request.status === 200) {
-            return request.responseText;
-        } else {
-            return "";
-        }
-    }
-
     /**
      * 将文档之中的符合规则的占位符都替换为emoji
     */
@@ -79,7 +67,7 @@ module emoji {
             var emojiSVG = div.getElementsByTagName("svg");
             var len = emojiSVG.length;
 
-            console.log(emojiSVG);
+            // console.log(emojiSVG);
 
             for (var i: number = 0; i < len; i++) {
                 var svg: SVGSVGElement = emojiSVG[i];
@@ -109,7 +97,7 @@ module emoji {
             if (!keys) {
                 return text;
             } else {
-                keys = Render.uniq(keys);
+                keys = Strings.uniq(keys);
             }
 
             for (var i: number = 0; i < keys.length; i++) {
@@ -137,13 +125,6 @@ module emoji {
             }
 
             return text;
-        }
-
-        private static uniq(a: string[]): string[] {
-            var seen = {};
-            return a.filter(function (item) {
-                return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-            });
         }
     }
 
