@@ -97,7 +97,7 @@ module emoji {
             if (!keys) {
                 return text;
             } else {
-                keys = Strings.uniq(keys);
+                keys = Strings.Unique(keys);
             }
 
             for (var i: number = 0; i < keys.length; i++) {
